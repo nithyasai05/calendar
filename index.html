@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calendar</title>
+    <style>
+      body {
+        /* background-color: rgb(28, 27, 27); */
+        background-color: darkslategrey;
+        /* background-color:deepskyblue; */
+        font-family: "Arial", sans-serif;
+        text-align: center;
+      }
+      main {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      #calender {
+        padding: 10px 50px;
+        margin: 50px;
+        width: 400px;
+        height: auto;
+        background-color: powderblue;
+        color: black;
+        border-radius: 10px;
+        box-shadow: 0 4px 30px black;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        color: darkslategrey;
+      }
+      .weeks,
+      #days {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        font-size: 20px;
+      }
+      #days {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        font-size: 17px;
+        font-weight: bold;
+        text-align: center;
+      }
+      .day {
+        transition: background-color 0.3s;
+        padding: 5px;
+      }
+      .day:hover {
+        background-color: skyblue;
+        border-radius: 10%;
+      }
+      .today {
+        border: 1px solid;
+        border-radius: 10%;
+        background-color: skyblue;
+        color: black;
+      }
+      .weeks p {
+        color: darkslategrey;
+        font-weight: bold;
+      }
+      #pre {
+        float: left;
+      }
+      #next {
+        float: right;
+      }
+      #next,
+      #pre {
+        border: none;
+        padding: 10px 20px;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+        background-color: darkslategrey;
+        color: white;
+        font-weight: bold;
+      }
+      #pre:hover,
+      #next:hover {
+        background-color: deepskyblue;
+        color: black;
+      }
+      hr {
+        border-color: darkgrey;
+      }
+      h1 {
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>POCKET 🗓 CALENDAR</h1>
+      <article id="calender">
+        <header>
+          <h3 id="curr-month">Month</h3>
+          <h3 id="curr-year">Year</h3>
+        </header>
+        <section class="weeks">
+          <p>S</p>
+          <p>M</p>
+          <p>T</p>
+          <p>W</p>
+          <p>T</p>
+          <p>F</p>
+          <p>S</p>
+        </section>
+        <hr />
+        <section id="days"></section>
+        <div>
+          <button id="pre">< PREV</button>
+          <button id="next">NEXT ></button>
+        </div>
+      </article>
+    </main>
+
+    <script>
+      let date = new Date();
+
+      function renderCalendar(date) {
+        const months = [
+          "JAN",
+          "FEB",
+          "MAR",
+          "APR",
+          "MAY",
+          "JUN",
+          "JUL",
+          "AUG",
+          "SEP",
+          "OCT",
+          "NOV",
+          "DEC",
+        ];
+
+        const currMonth = document.getElementById("curr-month");
+        const month = date.getMonth();
+        currMonth.textContent = months[month];
+
+        const year = date.getFullYear();
+        const currYear = document.getElementById("curr-year");
+        currYear.textContent = date.getFullYear();
+
+        const firstDay = new Date(
+          date.getFullYear(),
+          date.getMonth(),
+          1
+        ).getDay();
+
+        const noOfDaysInMonth = new Date(
+          date.getFullYear(),
+          date.getMonth() + 1,
+          0
+        ).getDate();
+
+        let dayHtml = "";
+        for (let i = 0; i < firstDay; i++) {
+          dayHtml += "<p class='day'></p>";
+        }
+        for (let day = 1; day <= noOfDaysInMonth; day++) {
+          let today = new Date();
+          if (
+            day === today.getDate() &&
+            month === today.getMonth() &&
+            date.getFullYear() === today.getFullYear()
+          ) {
+            dayHtml += "<p class='day today'>" + day + "</p>";
+          } else {
+            dayHtml += "<p class='day'>" + day + "</p>";
+          }
+        }
+        document.getElementById("days").innerHTML = dayHtml;
+      }
+      renderCalendar(date);
+
+      const previous = document.getElementById("pre");
+      const nextb = document.getElementById("next");
+
+      previous.addEventListener("click", function () {
+        date.setMonth(date.getMonth() - 1);
+        renderCalendar(date);
+      });
+
+      nextb.addEventListener("click", function () {
+        date.setMonth(date.getMonth() + 1);
+        renderCalendar(date);
+      });
+    </script>
+  </body>
+</html>
